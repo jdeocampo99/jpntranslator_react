@@ -24,6 +24,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
+//creating an endpoint for our conjugation router
 app.use("/conjugationAPI", conjugationRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

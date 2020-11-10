@@ -1,3 +1,8 @@
+//TODO:
+//1. Reformat the tabs
+//Tab 1: Vocab, Kanji information for e kanji, verb conjugation (only if it is typed in japanese)
+//Tab 2: Sentences translation
+
 import React, { Component, useState } from "react";
 import "../css/SearchRenderer.css";
 import { Tabs, Tab, TextField } from "@material-ui/core";
@@ -33,9 +38,9 @@ const SearchRenderer = () => {
       case 0:
         request = require("request");
         //send the query to jisho's API
-        url = fetch_vocab_url(query);
+        let vocab_url = fetch_vocab_url(query);
         //fetching the data from the api and turning it into a usable json
-        fetch(url)
+        fetch(vocab_url)
           .then((res) => res.json())
           .then((json) => {
             console.log(json);
@@ -74,11 +79,10 @@ const SearchRenderer = () => {
       case 3:
         request = require("request");
         //send the query to jisho's api
-        url = fetch_kanji_url(query);
+        let kanji_url = fetch_kanji_url(query);
 
-        console.log(url);
         //creates a request for the kanjis
-        request(url, (error, response, body) => {
+        request(kanji_url, (error, response, body) => {
           const json = jisho.parseKanjiPageHtml(body, query);
           let kanji_info = {
             stroke_order: json.strokeOrderSvgUri,

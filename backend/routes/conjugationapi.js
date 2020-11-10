@@ -1,20 +1,15 @@
 var express = require("express");
+const get_results = require("../scraper");
 var router = express.Router();
 
-const scrape_conjugation = (query) => {
-  const cheerio = require("cheerio");
-  const axios = require("axios");
-  const siteUrl =
-    "https://conjugator.reverso.net/conjugation-japanese-verb-" +
-    query +
-    ".html";
-};
 /* GET conjugations from reverso.net */
 router.get("/", function (req, res, next) {
   console.log(req.query.verb);
+  //grabbing the query from the api request
   const query = req.query.verb;
-  scrape_conjugation(query);
-  res.send(query);
+  //
+  const result = get_results(query);
+  res.send(result);
 });
 
 module.exports = router;
