@@ -9,8 +9,15 @@ export const fetch_vocab_url = (query) => {
 export const get_vocab_info = (json) => {
   let vocab_list = json.data;
   let obj_vocab_list = [];
+
+  //iterate through every vocabulary word in our query
   for (let i = 0; i < vocab_list.length; i++) {
+    //saving the current word to a variable
     let current_word = vocab_list[i];
+    //Pushing the relevant information for the word to an object
+
+    //TODO: make a call to our conjugation API, if it returns a valid word in reverso, then add the conjugation to the word
+
     obj_vocab_list.push({
       word: current_word.japanese[0].word, //note there may not be anything here if it is just katakana
       reading: current_word.japanese[0].reading,
@@ -48,4 +55,16 @@ export const fetch_kanji_url = (query) => {
   let SEARCH_KANJI = query.trim();
   const SEARCH_URI = proxy + jisho.getUriForKanjiSearch(SEARCH_KANJI);
   return SEARCH_URI;
+};
+
+export const determine_query = (query) => {
+  //parse the query
+  let split_str = query.split(" ");
+
+  //TODO: or it equals ぐ
+  if (split_str[0] == "gu") {
+    return 1;
+  } else {
+    return 0;
+  }
 };
