@@ -1,9 +1,10 @@
 import React, { Component, useState } from "react";
 import "../css/SearchRenderer.css";
-import { Tabs, Tab, TextField } from "@material-ui/core";
+import { Tabs, Tab, Switch } from "@material-ui/core";
 import {
   fetch_kanji_url,
   fetch_vocab_url,
+  get_translate_url,
   get_vocab_info,
 } from "../api/vocabfetch";
 
@@ -18,6 +19,8 @@ const SearchRenderer = () => {
   const [placeholder_text, setplaceholder_text] = useState(
     "Enter English/Japanese Vocabulary"
   );
+
+  const [translationSwitch, settranslationSwitch] = useState(false);
 
   //this function handles the submission of the query to the api
   const handleSubmit = (e) => {
@@ -37,7 +40,6 @@ const SearchRenderer = () => {
         fetch(url)
           .then((res) => res.json())
           .then((json) => {
-            console.log(json);
             //save the query's data into an array of useful vocabulary objects
             let arr_of_vocab_obj = get_vocab_info(json);
           });
@@ -48,22 +50,17 @@ const SearchRenderer = () => {
 
       //google translate
       case 1:
-        //should take the query and open up the google translate on a tab
+        //Setting the URL
+        url = get_translate_url(translationSwitch, query);
+        //opens the google translate tab in a new page
+        window.open(url);
 
-        //ENGLISH TO JPN
-        url =
-          "https://translate.google.com#view=home&op=translate&sl=en&tl=ja&text=" +
-          query;
-
-        //JPN to ENG
-        //url = sdfasdf
-
-        //map to Translation Renderer array
         break;
 
       //verb conjugations
       case 2:
         //scrape reverso.net for conjugations,
+
         //map them to conjurenderer array
 
         break;
@@ -74,7 +71,6 @@ const SearchRenderer = () => {
         //send the query to jisho's api
         url = fetch_kanji_url(query);
 
-        console.log(url);
         //creates a request for the kanjis
         request(url, (error, response, body) => {
           const json = jisho.parseKanjiPageHtml(body, query);
@@ -133,6 +129,12 @@ const SearchRenderer = () => {
     }
   };
 
+  //handles the switch for the google chrome translator
+  const handleSwitch = (e) => {
+    //updating the switch whenever it is clicked
+    settranslationSwitch(!translationSwitch);
+  };
+
   return (
     <div>
       <Tabs
@@ -145,7 +147,7 @@ const SearchRenderer = () => {
         <Tab label="Vocabulary" />
         <Tab label="Sentence Translation" />
         <Tab label="Verb Conjugation" />
-        <Tab label="Kanji Stroke Order" />
+        <Tab label="Kanji Information" />
       </Tabs>
       <form className="search_form" onSubmit={handleSubmit}>
         <input
@@ -154,6 +156,24 @@ const SearchRenderer = () => {
           name="search_bar"
           onChange={(e) => setQuery(e.target.value)}
         />
+        <br />
+        {
+          //conditionally render the switch statement if the g translate tab is up
+          //TODO: clean this ui up
+          type_of_query === 1 && (
+            <div>
+              <label>
+                {translationSwitch === true ? "JPN" : "ENG"}
+                {"->"}
+                {translationSwitch === false ? "JPN" : "ENG"}
+              </label>
+              <Switch
+                checked={translationSwitch.ToJpn}
+                onChange={handleSwitch}
+              />
+            </div>
+          )
+        }
       </form>
     </div>
   );

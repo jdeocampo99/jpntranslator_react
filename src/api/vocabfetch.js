@@ -17,9 +17,27 @@ export const get_vocab_info = (json) => {
       english_definitions: current_word.senses[0].english_definitions,
       uri: "https://jisho.org/word/" + current_word.japanese[0].word,
     });
-    //console.log(obj_vocab_list[i]);
+    console.log(obj_vocab_list[i]);
   }
   return obj_vocab_list;
+};
+
+//takes in the language boolean and the query and returns the correct url
+export const get_translate_url = (language_toggle, query) => {
+  let url;
+  //ENG TO JPN
+  if (!language_toggle) {
+    url =
+      "https://translate.google.com#view=home&op=translate&sl=en&tl=ja&text=" +
+      query;
+  }
+  //JPN TO ENG
+  else {
+    url =
+      "https://translate.google.com#view=home&op=translate&sl=ja&tl=en&text=" +
+      query;
+  }
+  return url;
 };
 
 //returns the correct url for a kanji
