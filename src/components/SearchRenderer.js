@@ -18,6 +18,7 @@ const SearchRenderer = () => {
   const [placeholder_text, setplaceholder_text] = useState(
     "Enter English/Japanese Vocabulary"
   );
+  const [conjugation_obj, setconjugation_obj] = useState({});
 
   //this function handles the submission of the query to the api
   const handleSubmit = (e) => {
@@ -64,6 +65,7 @@ const SearchRenderer = () => {
       //verb conjugations
       case 2:
         //scrape reverso.net for conjugations,
+        callAPI();
         //map them to conjurenderer array
 
         break;
@@ -132,6 +134,18 @@ const SearchRenderer = () => {
       default:
         break;
     }
+  };
+
+  const callAPI = () => {
+    //sending the query to our api
+    let url = "http://localhost:9000/conjugationAPI?verb=" + query;
+    //api should return the scraped data from reverso.net
+    fetch(url)
+      .then((res) => res.text())
+      .then((data) => {
+        //setconjugation_obj(text);
+        console.log(data);
+      });
   };
 
   return (
