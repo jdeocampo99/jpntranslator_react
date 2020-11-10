@@ -94,6 +94,7 @@ const SearchRenderer = () => {
           console.log(`Parts: ${json.parts}`);
           console.log(`Meaning: ${json.meaning}`);
           console.log(`Url: ${json.uri}`);
+          //test
         });
 
         //pass object with kanji information to a kanji stroke renderer
